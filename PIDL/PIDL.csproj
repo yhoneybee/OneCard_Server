@@ -3,4 +3,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ProudDotNetClient">
+      <HintPath>..\..\Online\DLL\ProudDotNetClient.dll</HintPath>
+    </Reference>
+    <Reference Include="ProudDotNetServer">
+      <HintPath>..\..\Online\DLL\ProudDotNetServer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

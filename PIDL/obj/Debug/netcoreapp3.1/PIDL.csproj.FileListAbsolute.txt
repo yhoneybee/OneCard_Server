@@ -1,0 +1,16 @@
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\PIDL.exe
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\PIDL.deps.json
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\PIDL.runtimeconfig.json
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\PIDL.runtimeconfig.dev.json
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\PIDL.dll
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\PIDL.pdb
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\ProudDotNetClient.dll
+C:\git\OneCard_Server\PIDL\bin\Debug\netcoreapp3.1\ProudDotNetServer.dll
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.csprojAssemblyReference.cache
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.AssemblyInfoInputs.cache
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.AssemblyInfo.cs
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.csproj.CoreCompileInputs.cache
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.csproj.CopyComplete
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.dll
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.pdb
+C:\git\OneCard_Server\PIDL\obj\Debug\netcoreapp3.1\PIDL.genruntimeconfig.cache
