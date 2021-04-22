@@ -1,6 +1,3 @@
-C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.deps.json
-C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.runtimeconfig.json
-C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.runtimeconfig.dev.json
 C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.exe
 C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\OneCard_Server.exe
 C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\OneCard_Server.deps.json

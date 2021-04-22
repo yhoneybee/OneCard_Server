@@ -86,6 +86,11 @@ namespace OneCard_Server
                     case "1":
                         Console.WriteLine();
                         Console.WriteLine($"접속자 수 : {clients.Count}");
+                        foreach (var c in clients)
+                        {
+                            Console.Write($"[ {c} ] ");
+                        }
+                        Console.WriteLine();
                         Console.WriteLine();
                         Console.ReadLine();
                         Print();
@@ -95,6 +100,18 @@ namespace OneCard_Server
                         Console.WriteLine($"방 개수 : {rooms.Count}");
                         Console.WriteLine();
                         Console.ReadLine();
+                        Print();
+                        break;
+                    case "":
+                        Print();
+                        break;
+                    case "r":
+                    case "R":
+                        Console.Clear();
+                        Console.WriteLine("서버 재 구동중...");
+                        clients.Clear();
+                        server.Stop();
+                        server.Start(param);
                         Print();
                         break;
                     case "q":
@@ -110,7 +127,8 @@ namespace OneCard_Server
         public static void Print()
         {
             int port = 6475;
-            string ip = "(wifi : 172.30.1.22, hamachi : 25.75.45.185, localhost : 127.0.0.1)";
+            //string ip = "(wifi : 172.30.1.22, hamachi : 25.75.45.185, localhost : 127.0.0.1)";
+            string ip = "(wifi : 192.168.1.254, hamachi : NONE, localhost : 127.0.0.1)";
 
             Console.Clear();
             Console.WriteLine($"서버 구동 시작!");
@@ -120,20 +138,22 @@ namespace OneCard_Server
             Console.WriteLine("[ binding key ]");
             Console.WriteLine("1 : 접속자 정보 보기");
             Console.WriteLine("2 : 방 정보 보기");
+            Console.WriteLine("R : 서버 다시 시작");
             Console.WriteLine("Q : 나가기");
             Console.WriteLine();
-            Console.Write("> ");
         }
 
         private static void OnLeaveServer(NetClientInfo clientInfo, ErrorInfo errorinfo, ByteArray comment)
         {
-            Console.WriteLine($"Leaved Server, ID : {clientInfo.hostID}");
+            Console.WriteLine($"[ Leaved Server, ID : {clientInfo.hostID} ]");
+            Console.WriteLine();
             clients.Remove(clientInfo.hostID);
         }
 
         private static void OnJoinServer(NetClientInfo clientInfo)
         {
-            Console.WriteLine($"Joined Server, ID : {clientInfo.hostID}");
+            Console.WriteLine($"[ Joined Server, ID : {clientInfo.hostID} ]");
+            Console.WriteLine();
             clients.Add(clientInfo.hostID);
         }
 
