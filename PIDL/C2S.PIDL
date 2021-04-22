@@ -2,10 +2,7 @@
 
 global C2S 1000 // Fill your namespace and start ID number here.
 {
-	RoomCreate([in] string room_name, [in] int pw, [in] int max_player);
-	JoinRoom([in] string room_name, [in] int pw);
-	LeaveRoom([in] string room_name);
-	GameStart([in] string room_name);
+
 }       
 
 

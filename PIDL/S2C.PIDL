@@ -2,14 +2,7 @@
 
 global S2C 2000 // Fill your namespace and start ID number here.
 {
-	Create_OK();
-	Create_Fail();
-	Join_OK();
-	Join_Fail();
-	Leave_OK();
-	Leave_Fail();
-	Start_OK();
-	Start_Fail();
+
 }
 
 

@@ -54,8 +54,8 @@ namespace OneCard_Server
     {
         public static List<Room> rooms = new List<Room>();
         public static NetServer server = new NetServer();
-        public static S2C.Proxy proxy = new S2C.Proxy();
-        public static C2S.Stub stub = new C2S.Stub();
+/*        public static S2C.Proxy proxy = new S2C.Proxy();
+        public static C2S.Stub stub = new C2S.Stub();*/
         public static List<HostID> clients = new List<HostID>();
         static void Main(string[] _)
         {
@@ -65,16 +65,11 @@ namespace OneCard_Server
             param.protocolVersion = new Nettention.Proud.Guid("{E54C4938-8BFC-4443-87F3-386C1AA388F0}");
             param.m_enableAutoConnectionRecoveryOnServer = true;
 
-            stub.RoomCreate = OnRoomCreate;
-            stub.JoinRoom = OnJoinRoom;
-            stub.LeaveRoom = OnLeaveRoom;
-            stub.GameStart = OnGameStart;
-
             server.ClientJoinHandler = OnJoinServer;
             server.ClientLeaveHandler = OnLeaveServer;
 
-            server.AttachProxy(proxy);
-            server.AttachStub(stub);
+/*            server.AttachProxy(proxy);
+            server.AttachStub(stub);*/
             server.Start(param);
 
             Print();
@@ -86,6 +81,7 @@ namespace OneCard_Server
                     case "1":
                         Console.WriteLine();
                         Console.WriteLine($"접속자 수 : {clients.Count}");
+                        Console.Write("Client IDs : ");
                         foreach (var c in clients)
                         {
                             Console.Write($"[ {c} ] ");
@@ -120,6 +116,9 @@ namespace OneCard_Server
                         server.Stop();
                         Console.Clear();
                         return;
+                    default:
+                        Print();
+                        break;
                 }
             }
         }
@@ -127,8 +126,8 @@ namespace OneCard_Server
         public static void Print()
         {
             int port = 6475;
-            //string ip = "(wifi : 172.30.1.22, hamachi : 25.75.45.185, localhost : 127.0.0.1)";
-            string ip = "(wifi : 192.168.1.254, hamachi : NONE, localhost : 127.0.0.1)";
+            string ip = "(wifi : 172.30.1.22, hamachi : 25.75.45.185, localhost : 127.0.0.1)";
+            //string ip = "(wifi : 192.168.1.254, hamachi : NONE, localhost : 127.0.0.1)";
 
             Console.Clear();
             Console.WriteLine($"서버 구동 시작!");
@@ -155,86 +154,6 @@ namespace OneCard_Server
             Console.WriteLine($"[ Joined Server, ID : {clientInfo.hostID} ]");
             Console.WriteLine();
             clients.Add(clientInfo.hostID);
-        }
-
-        private static bool OnRoomCreate(HostID remote, RmiContext rmiContext, string room_name, int pw, int max_player)
-        {
-            foreach (var room in rooms)
-                if (room.name == room_name)
-                {
-                    proxy.Create_Fail(remote, RmiContext.ReliableSend);
-                    return false;
-                }
-
-            HostID[] ids = new HostID[1];
-            ids[0] = remote;
-
-            rooms.Add(new Room(server.CreateP2PGroup(ids, new ByteArray()), room_name, pw, max_player));
-
-            proxy.Create_OK(remote, RmiContext.ReliableSend);
-
-            return true;
-        }
-
-        private static bool OnJoinRoom(HostID remote, RmiContext rmiContext, string room_name, int pw)
-        {
-            foreach (var room in rooms)
-            {
-                if (room.name == room_name)
-                {
-                    if (!room.isStart)
-                    {
-                        if (server.JoinP2PGroup(remote, room.group_ID))
-                        {
-                            if (room.Join(remote))
-                            {
-                                proxy.Join_OK(remote, RmiContext.ReliableSend);
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            proxy.Join_Fail(remote, RmiContext.ReliableSend);
-            return false;
-        }
-
-        private static bool OnLeaveRoom(HostID remote, RmiContext rmiContext, string room_name)
-        {
-            foreach (var room in rooms)
-            {
-                if (room.name == room_name)
-                {
-                    if (server.LeaveP2PGroup(remote, room.group_ID))
-                    {
-                        if (room.Leave(remote))
-                        {
-                            proxy.Leave_OK(remote, RmiContext.ReliableSend);
-                            return true;
-                        }
-                    }
-                }
-            }
-            proxy.Leave_Fail(remote, RmiContext.ReliableSend);
-            return false;
-        }
-
-        private static bool OnGameStart(HostID remote, RmiContext rmiContext, string room_name)
-        {
-            foreach (var room in rooms)
-            {
-                if (room.name == room_name)
-                {
-                    if (room.GameStart())
-                    {
-                        proxy.Start_OK(room.group_ID, RmiContext.ReliableSend);
-                        return true;
-                    }
-                }
-            }
-
-            proxy.Start_Fail(remote, RmiContext.ReliableSend);
-            return false;
         }
     }
 }

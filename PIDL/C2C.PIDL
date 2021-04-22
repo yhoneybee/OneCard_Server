@@ -2,15 +2,7 @@
 
 global C2C 3000 // Fill your namespace and start ID number here.
 {
-	TurnChanged();
-	Turn([in] HostID turn);
-	Draw([in] HostID target, [in] int count);
-	Invalid();
-	Jump([in] HostID caster);
-	Reverse([in] HostID caster);
-	ChangeColor([in] bool black);
-	Timer([in] float time);
-	Rank([in] int rank);
+
 }       
 
 
