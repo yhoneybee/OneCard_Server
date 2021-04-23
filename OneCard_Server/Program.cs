@@ -4,65 +4,89 @@ using Nettention.Proud;
 
 namespace OneCard_Server
 {
-    public class Player
+    public class Card
     {
-        public Player(HostID ID, bool isReady, bool isExclude, int cards)
+        public Card(bool is_black, Symbols symbol, int num)
         {
-            this.ID = ID;
-            room_name = default;
-            this.isReady = isReady;
-            this.isExclude = isExclude;
-            this.cards = cards;
+            IsBlack = is_black;
+            Symbol = symbol;
+            Num = num;
         }
 
-        public HostID ID;
-        public string room_name;
-        public bool isReady;
-        public bool isExclude;
-        public int cards;
+        public enum Symbols { SPADE, DIAMOND, CLOVER, HEART, }
+        public bool IsBlack { get; set; }
+        public Symbols Symbol { get; set; }
+        public int Num { get; set; }
+    }
+    public class Player
+    {
+        public static List<Player> Players = new List<Player>();
+
+        public Player(HostID id, bool is_ready)
+        {
+            ID = id;
+            IsReady = is_ready;
+            Accessed = null;
+            Hands = new List<Card>();
+            Players.Add(this);
+        }
+
+        public static Player Find(HostID ID)
+        {
+            foreach (var player in Players)
+            {
+                if (player.ID == ID)
+                    return player;
+            }
+            return null;
+        }
+
+        public void Draw(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Random rd = new Random();
+                Hands.Add(new Card(rd.Next(0, 1) == 0, (Card.Symbols)rd.Next(0, 3), rd.Next(1, 13)));
+            }
+        }
+
+        public HostID ID { get; set; }
+        public Room Accessed { get; set; }
+        public bool IsReady { get; set; }
+        public List<Card> Hands { get; set; }
     }
     public class Room
     {
-        public Room(HostID group_ID, string name, int pw, int max_player)
+        public static List<Room> Rooms = new List<Room>();
+
+        public Room()
         {
-            this.group_ID = group_ID;
-            Name = name;
-            Pw = pw;
-            this.max_player = max_player;
+            Rooms.Add(this);
         }
 
-        public bool Join()
+        public static Room Find(string name)
         {
-
-
-            return false;
+            foreach (var room in Rooms)
+            {
+                if (room.Name == name)
+                    return room;
+            }
+            return null;
         }
 
-        public bool GameStart()
-        {
-            if (isStart)
-                return false;
-            foreach (var p in players.data)
-                if (!p.isReady)
-                    return false;
-            isStart = true;
-            return true;
-        }
-
-        public HostID group_ID;
-        public string Name { get; }
-        public int Pw { get; }
-        public int max_player;
-        public bool isStart = false;
-        public FastArray<Player> players = new FastArray<Player>();
+        public string Name { get; set; }
+        public int Pw { get; set; }
+        public HostID GroupID { get; set; }
+        public int MaxPlayer { get; set; }
+        public bool IsStart { get; set; }
+        public List<Player> Players { get; set; } = new List<Player>();
     }
     class Program
     {
-        public static List<Room> rooms = new List<Room>();
         public static NetServer server = new NetServer();
-/*        public static S2C.Proxy proxy = new S2C.Proxy();
-        public static C2S.Stub stub = new C2S.Stub();*/
-        public static List<HostID> clients = new List<HostID>();
+        /*        public static S2C.Proxy proxy = new S2C.Proxy();
+                public static C2S.Stub stub = new C2S.Stub();*/
+
         static void Main(string[] _)
         {
             StartServerParameter param = new StartServerParameter();
@@ -74,8 +98,8 @@ namespace OneCard_Server
             server.ClientJoinHandler = OnJoinServer;
             server.ClientLeaveHandler = OnLeaveServer;
 
-/*            server.AttachProxy(proxy);
-            server.AttachStub(stub);*/
+            /*            server.AttachProxy(proxy);
+                        server.AttachStub(stub);*/
             server.Start(param);
 
             Print();
@@ -86,11 +110,11 @@ namespace OneCard_Server
                 {
                     case "1":
                         Console.WriteLine();
-                        Console.WriteLine($"접속자 수 : {clients.Count}");
-                        Console.Write("Client IDs : ");
-                        foreach (var c in clients)
+                        Console.WriteLine($"접속자 수 : {Player.Players.Count}");
+                        Console.Write("player IDs : ");
+                        foreach (var player in Player.Players)
                         {
-                            Console.Write($"[ {c} ] ");
+                            Console.Write($"[ {player.ID} ] ");
                         }
                         Console.WriteLine();
                         Console.WriteLine();
@@ -99,7 +123,7 @@ namespace OneCard_Server
                         break;
                     case "2":
                         Console.WriteLine();
-                        Console.WriteLine($"방 개수 : {rooms.Count}");
+                        //Console.WriteLine($"방 개수 : {rooms.Count}");
                         Console.WriteLine();
                         Console.ReadLine();
                         Print();
@@ -111,7 +135,8 @@ namespace OneCard_Server
                     case "R":
                         Console.Clear();
                         Console.WriteLine("서버 재 구동중...");
-                        clients.Clear();
+                        Player.Players.Clear();
+                        Room.Rooms.Clear();
                         server.Stop();
                         server.Start(param);
                         Print();
@@ -152,14 +177,14 @@ namespace OneCard_Server
         {
             Console.WriteLine($"[ Leaved Server, ID : {clientInfo.hostID} ]");
             Console.WriteLine();
-            clients.Remove(clientInfo.hostID);
+            Player.Players.Remove(Player.Find(clientInfo.hostID));
         }
 
         private static void OnJoinServer(NetClientInfo clientInfo)
         {
             Console.WriteLine($"[ Joined Server, ID : {clientInfo.hostID} ]");
             Console.WriteLine();
-            clients.Add(clientInfo.hostID);
+            Player.Players.Add(new Player(clientInfo.hostID, false));
         }
     }
 }
