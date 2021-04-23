@@ -2,8 +2,18 @@
 
 global C2S 1000 // Fill your namespace and start ID number here.
 {
+	// Room
+	CreateRoom([in] string name, [in] int pin, [in] int max);
+	JoinRoom([in] string name, [in] int pin);
+	LeaveRoom([in] string name);
+	Ready();
+	UnReady();
+	Start();
 
-}       
+	// Ingame
+	OneCard();
+	ZeroCard();
+}
 
 
 

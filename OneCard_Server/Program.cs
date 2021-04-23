@@ -4,51 +4,57 @@ using Nettention.Proud;
 
 namespace OneCard_Server
 {
+    public class Player
+    {
+        public Player(HostID ID, bool isReady, bool isExclude, int cards)
+        {
+            this.ID = ID;
+            room_name = default;
+            this.isReady = isReady;
+            this.isExclude = isExclude;
+            this.cards = cards;
+        }
+
+        public HostID ID;
+        public string room_name;
+        public bool isReady;
+        public bool isExclude;
+        public int cards;
+    }
     public class Room
     {
         public Room(HostID group_ID, string name, int pw, int max_player)
         {
             this.group_ID = group_ID;
-            this.name = name;
-            this.pw = pw;
+            Name = name;
+            Pw = pw;
             this.max_player = max_player;
         }
-        public bool Join(HostID ID)
+
+        public bool Join()
         {
-            if (hostIDs.Count < max_player)
-            {
-                hostIDs.Add(ID);
-                return true;
-            }
-            return false;
-        }
-        public bool Leave(HostID ID)
-        {
-            for (int i = 0; i < hostIDs.Count; i++)
-            {
-                if (hostIDs[i] == ID)
-                {
-                    hostIDs.RemoveAt(i);
-                    return true;
-                }
-            }
+
 
             return false;
         }
+
         public bool GameStart()
         {
             if (isStart)
                 return false;
+            foreach (var p in players.data)
+                if (!p.isReady)
+                    return false;
             isStart = true;
             return true;
         }
 
         public HostID group_ID;
-        public string name;
-        public int pw;
+        public string Name { get; }
+        public int Pw { get; }
         public int max_player;
-        public FastArray<HostID> hostIDs = new FastArray<HostID>();
         public bool isStart = false;
+        public FastArray<Player> players = new FastArray<Player>();
     }
     class Program
     {
