@@ -2,6 +2,8 @@
 
 global S2C 2000 // Fill your namespace and start ID number here.
 {
+	Start();
+	Draw([in] int count);
 	Rank([in] int rank);
 	ExcludeGame();
 }

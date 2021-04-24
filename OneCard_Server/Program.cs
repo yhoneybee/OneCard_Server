@@ -22,10 +22,10 @@ namespace OneCard_Server
     {
         public static List<Player> Players = new List<Player>();
 
-        public Player(HostID id, bool is_ready)
+        public Player(HostID id)
         {
             ID = id;
-            IsReady = is_ready;
+            IsReady = false;
             Accessed = null;
             Hands = new List<Card>();
             Players.Add(this);
@@ -59,8 +59,15 @@ namespace OneCard_Server
     {
         public static List<Room> Rooms = new List<Room>();
 
-        public Room()
+        public Room(HostID group_id, string name, int pw, int max)
         {
+            GroupID = group_id;
+            Name = name;
+            Pw = pw;
+            MaxPlayer = max;
+            IsStart = false;
+            TurnIndex = new Random().Next(0, MaxPlayer - 1);
+            NextValue = 1;
             Rooms.Add(this);
         }
 
@@ -74,18 +81,90 @@ namespace OneCard_Server
             return null;
         }
 
+        public bool Join(Player player)
+        {
+            if (Players.Count < MaxPlayer)
+            {
+                Players.Add(player);
+                Console.WriteLine($"[  OK  ] {player.ID} join to {Name} Room");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"[ FAIL ] {player.ID} join to {Name} Room");
+                return false;
+            }
+        }
+
+        public void Leave(Player player)
+        {
+            Players.Remove(player);
+            Console.WriteLine($"[  OK  ] {player.ID} leave to {Name} Room");
+        }
+
+        public bool AllReady()
+        {
+            foreach (var p in Players)
+                if (!p.IsReady)
+                    return false;
+            return true;
+        }
+
+        public Player NowTurn() => Players[TurnIndex];
+
+        public Player NextTurn(NextTurnCase turn_case)
+        {
+            if (IsStart)
+            {
+                int next = 0;
+                switch (turn_case)
+                {
+                    case NextTurnCase.NORMAL:
+                        next = 1;
+                        break;
+                    case NextTurnCase.JUMP:
+                        next = 2;
+                        break;
+                }
+                for (int i = 0; i < next; i++)
+                {
+                    TurnIndex += NextValue;
+                    if (TurnIndex == MaxPlayer)
+                        TurnIndex = 0;
+                    if (TurnIndex < 0)
+                        TurnIndex = MaxPlayer - 1;
+                }
+                return Players[TurnIndex];
+            }
+            return null;
+        }
+
+        public void Reverse()
+        {
+            switch (NextValue)
+            {
+                case 1:
+                    NextValue = -1;
+                    break;
+                case -1:
+                    NextValue = 1;
+                    break;
+            }
+        }
+
         public string Name { get; set; }
         public int Pw { get; set; }
         public HostID GroupID { get; set; }
         public int MaxPlayer { get; set; }
         public bool IsStart { get; set; }
+        public enum NextTurnCase { NORMAL, JUMP, AGAIN, }
+        public int TurnIndex { get; set; }
+        int NextValue { get; set; }
         public List<Player> Players { get; set; } = new List<Player>();
     }
     class Program
     {
         public static NetServer server = new NetServer();
-        /*        public static S2C.Proxy proxy = new S2C.Proxy();
-                public static C2S.Stub stub = new C2S.Stub();*/
 
         static void Main(string[] _)
         {
@@ -98,8 +177,6 @@ namespace OneCard_Server
             server.ClientJoinHandler = OnJoinServer;
             server.ClientLeaveHandler = OnLeaveServer;
 
-            /*            server.AttachProxy(proxy);
-                        server.AttachStub(stub);*/
             server.Start(param);
 
             Print();
@@ -123,7 +200,7 @@ namespace OneCard_Server
                         break;
                     case "2":
                         Console.WriteLine();
-                        //Console.WriteLine($"방 개수 : {rooms.Count}");
+                        Console.WriteLine($"방 개수 : {Room.Rooms.Count}");
                         Console.WriteLine();
                         Console.ReadLine();
                         Print();
@@ -184,7 +261,7 @@ namespace OneCard_Server
         {
             Console.WriteLine($"[ Joined Server, ID : {clientInfo.hostID} ]");
             Console.WriteLine();
-            Player.Players.Add(new Player(clientInfo.hostID, false));
+            Player.Players.Add(new Player(clientInfo.hostID));
         }
     }
 }
