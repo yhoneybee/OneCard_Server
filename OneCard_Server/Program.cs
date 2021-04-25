@@ -177,9 +177,15 @@ namespace OneCard_Server
 
         public bool AllReady()
         {
+            Console.WriteLine($"Count : {Players.Count}");
+            if (Players.Count <= 1)
+                return false;
             foreach (var p in Players)
                 if (!p.IsReady)
+                {
+                    Console.WriteLine($"{p.ID} is Not Ready...");
                     return false;
+                }
             return true;
         }
 
@@ -395,13 +401,24 @@ namespace OneCard_Server
 
         private static bool OnUnReady(HostID remote, RmiContext rmiContext)
         {
+            Console.WriteLine($"{remote} has UnReady");
             Player.Find(remote).IsReady = false;
             return true;
         }
 
         private static bool OnReady(HostID remote, RmiContext rmiContext)
         {
-            Player.Find(remote).IsReady = true;
+            Console.WriteLine($"{remote} has Ready");
+            Player p = Player.Find(remote);
+            p.IsReady = true;
+            if (p.Joined.AllReady())
+            {
+                foreach (var player in p.Joined.Players)
+                {
+                    Console.WriteLine($"ID : {player.ID}");
+                    Proxy.Start(player.ID, rmiContext);
+                }
+            }
             return true;
         }
 
@@ -411,6 +428,7 @@ namespace OneCard_Server
             if (l != null)
             {
                 l.Players.Remove(Player.Find(remote));
+                Server.LeaveP2PGroup(l.GroupID, remote);
                 Console.WriteLine($"{remote} was leave to {name}");
                 if (l.Players.Count == 0)
                 {
@@ -469,7 +487,9 @@ namespace OneCard_Server
         {
             Console.WriteLine($"[ Leaved Server, ID : {clientInfo.hostID} ]");
             Console.WriteLine();
-            Player.Players.Remove(Player.Find(clientInfo.hostID));
+            Player del = Player.Find(clientInfo.hostID);
+            OnLeaveRoom(clientInfo.hostID, RmiContext.ReliableSend, del.Joined.Name);
+            Player.Players.Remove(del);
         }
 
         private static void OnJoinServer(NetClientInfo clientInfo)
