@@ -17,3 +17,6 @@ C:\git\OneCard_Server\OneCard_Server\obj\Debug\netcoreapp3.1\OneCard_Server.cspr
 C:\git\OneCard_Server\OneCard_Server\obj\Debug\netcoreapp3.1\OneCard_Server.dll
 C:\git\OneCard_Server\OneCard_Server\obj\Debug\netcoreapp3.1\OneCard_Server.pdb
 C:\git\OneCard_Server\OneCard_Server\obj\Debug\netcoreapp3.1\OneCard_Server.genruntimeconfig.cache
+C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.deps.json
+C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.runtimeconfig.json
+C:\git\OneCard_Server\OneCard_Server\bin\Debug\netcoreapp3.1\PIDL.runtimeconfig.dev.json

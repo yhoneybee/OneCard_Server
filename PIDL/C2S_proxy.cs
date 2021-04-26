@@ -199,56 +199,6 @@ Nettention.Proud.Marshaler.Write(__msg, count);
 	return RmiSend(remotes,rmiContext,__msg,
 		RmiName_Draw, Common.Draw);
 }
-public bool Attack(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int count)
-{
-	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
-		__msg.SimplePacketMode = core.IsSimplePacketMode();
-		Nettention.Proud.RmiID __msgid= Common.Attack;
-		__msg.Write(__msgid);
-		Nettention.Proud.Marshaler.Write(__msg, count);
-		
-	Nettention.Proud.HostID[] __list = new Nettention.Proud.HostID[1];
-	__list[0] = remote;
-		
-	return RmiSend(__list,rmiContext,__msg,
-		RmiName_Attack, Common.Attack);
-}
-
-public bool Attack(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext, int count)
-{
-	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
-__msg.SimplePacketMode = core.IsSimplePacketMode();
-Nettention.Proud.RmiID __msgid= Common.Attack;
-__msg.Write(__msgid);
-Nettention.Proud.Marshaler.Write(__msg, count);
-		
-	return RmiSend(remotes,rmiContext,__msg,
-		RmiName_Attack, Common.Attack);
-}
-public bool Invalid(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext)
-{
-	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
-		__msg.SimplePacketMode = core.IsSimplePacketMode();
-		Nettention.Proud.RmiID __msgid= Common.Invalid;
-		__msg.Write(__msgid);
-		
-	Nettention.Proud.HostID[] __list = new Nettention.Proud.HostID[1];
-	__list[0] = remote;
-		
-	return RmiSend(__list,rmiContext,__msg,
-		RmiName_Invalid, Common.Invalid);
-}
-
-public bool Invalid(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext)
-{
-	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
-__msg.SimplePacketMode = core.IsSimplePacketMode();
-Nettention.Proud.RmiID __msgid= Common.Invalid;
-__msg.Write(__msgid);
-		
-	return RmiSend(remotes,rmiContext,__msg,
-		RmiName_Invalid, Common.Invalid);
-}
 public bool ChangeSymbol(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int symbol)
 {
 	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
@@ -334,8 +284,6 @@ public const string RmiName_Ready="Ready";
 public const string RmiName_UnReady="UnReady";
 public const string RmiName_Down="Down";
 public const string RmiName_Draw="Draw";
-public const string RmiName_Attack="Attack";
-public const string RmiName_Invalid="Invalid";
 public const string RmiName_ChangeSymbol="ChangeSymbol";
 public const string RmiName_OneCard="OneCard";
 public const string RmiName_ZeroCard="ZeroCard";
@@ -351,8 +299,6 @@ public const string RmiName_Ready="";
 public const string RmiName_UnReady="";
 public const string RmiName_Down="";
 public const string RmiName_Draw="";
-public const string RmiName_Attack="";
-public const string RmiName_Invalid="";
 public const string RmiName_ChangeSymbol="";
 public const string RmiName_OneCard="";
 public const string RmiName_ZeroCard="";
