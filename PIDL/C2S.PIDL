@@ -17,6 +17,7 @@ global C2S 1000 // Fill your namespace and start ID number here.
 	ChangeSymbol([in] int symbol);
 	OneCard();
 	ZeroCard();
+	TurnEnd();
 }
 
 

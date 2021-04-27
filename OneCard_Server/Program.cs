@@ -32,6 +32,7 @@ namespace OneCard_Server
             Stub.ChangeSymbol = OnChangeSymbol;
             Stub.OneCard = OnOneCard;
             Stub.ZeroCard = OnZeroCard;
+            Stub.TurnEnd = OnTurnEnd;
 
             Server.AttachProxy(Proxy);
             Server.AttachStub(Stub);
@@ -41,6 +42,10 @@ namespace OneCard_Server
 
             while (true)
             {
+                foreach (var room in Room.Rooms)
+                {
+                    room.Logic();
+                }
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -62,7 +67,11 @@ namespace OneCard_Server
                         Console.Write("Room Infos : ");
                         foreach (var room in Room.Rooms)
                         {
-                            Console.Write($"[ Name {room.Name}, Pin {room.Pin}, Max {room.Max} ] ");
+                            Console.Write($"[ Name {room.Name}, Pin {room.Pin}, Max {room.Max} ] Players : ");
+                            foreach (var player in room.InPlayer)
+                            {
+                                Console.Write($"[{player.ID}] ");
+                            }
                         }
                         Console.WriteLine();
                         Console.ReadLine();
@@ -94,6 +103,13 @@ namespace OneCard_Server
             }
         }
 
+        private static bool OnTurnEnd(HostID remote, RmiContext rmiContext)
+        {
+            Player player = Player.Find(remote);
+            player.MyTurn = false;
+            return true;
+        }
+
         private static bool OnZeroCard(HostID remote, RmiContext rmiContext)
         {
             return true;
@@ -106,39 +122,45 @@ namespace OneCard_Server
 
         private static bool OnChangeSymbol(HostID remote, RmiContext rmiContext, int symbol)
         {
-            Player player = Player.Players.Find((p) => { return p.ID == remote; });
+            Player player = Player.Find(remote);
             player.InRoom.ChangeSymbol(symbol);
+            foreach (var p in player.InRoom.InPlayer)
+                Proxy.ChangeSymbol(p.ID, rmiContext, symbol);
             return true;
         }
 
         private static bool OnDraw(HostID remote, RmiContext rmiContext, int count)
         {
+            Player player = Player.Find(remote);
+            player.Draw();
             return true;
         }
 
         private static bool OnDown(HostID remote, RmiContext rmiContext, int symbol, int num)
         {
+            Player player = Player.Find(remote);
+            player.Down(symbol, num);
             return true;
         }
 
         private static bool OnUnReady(HostID remote, RmiContext rmiContext)
         {
-            Player player = Player.Players.Find((p) => { return p.ID == remote; });
+            Player player = Player.Find(remote);
             player.ReadySwitch(false);
             return true;
         }
 
         private static bool OnReady(HostID remote, RmiContext rmiContext)
         {
-            Player player = Player.Players.Find((p) => { return p.ID == remote; });
+            Player player = Player.Find(remote);
             player.ReadySwitch(true);
             return true;
         }
 
         private static bool OnLeaveRoom(HostID remote, RmiContext rmiContext, string name)
         {
-            Player player = Player.Players.Find((p) => { return p.ID == remote; });
-            Room room = Room.Rooms.Find((r) => { return r.Name == name; });
+            Player player = Player.Find(remote);
+            Room room = Room.Find(name);
             if (room.Leave(player))
             {
                 return true;
@@ -148,8 +170,8 @@ namespace OneCard_Server
 
         private static bool OnJoinRoom(HostID remote, RmiContext rmiContext, string name, int pin)
         {
-            Player player = Player.Players.Find((p) => { return p.ID == remote; });
-            Room room = Room.Rooms.Find((r) => { return r.Name == name; });
+            Player player = Player.Find(remote);
+            Room room = Room.Find(name);
             if (room.Pin == pin)
             {
                 room.Join(player);
@@ -160,15 +182,7 @@ namespace OneCard_Server
 
         private static bool OnCreateRoom(HostID remote, RmiContext rmiContext, string name, int pin, int max)
         {
-            if (Room.Create(name, pin, max))
-            {
-                Room.Rooms.Last().Join(Player.Players.Find((p) => { return p.ID == remote; }));
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Room.Create(name, pin, max);
         }
 
         public static void Print()
@@ -192,7 +206,7 @@ namespace OneCard_Server
 
         private static void OnLeaveServer(NetClientInfo clientInfo, ErrorInfo errorinfo, ByteArray comment)
         {
-            Player l = Player.Players.Find((p) => { return p.ID == clientInfo.hostID; });
+            Player l = Player.Find(clientInfo.hostID);
             l.InRoom.Leave(l);
             Player.Players.Remove(l);
             Console.WriteLine($"{clientInfo.hostID} leave to server...");

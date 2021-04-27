@@ -273,6 +273,30 @@ __msg.Write(__msgid);
 	return RmiSend(remotes,rmiContext,__msg,
 		RmiName_ZeroCard, Common.ZeroCard);
 }
+public bool TurnEnd(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext)
+{
+	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
+		__msg.SimplePacketMode = core.IsSimplePacketMode();
+		Nettention.Proud.RmiID __msgid= Common.TurnEnd;
+		__msg.Write(__msgid);
+		
+	Nettention.Proud.HostID[] __list = new Nettention.Proud.HostID[1];
+	__list[0] = remote;
+		
+	return RmiSend(__list,rmiContext,__msg,
+		RmiName_TurnEnd, Common.TurnEnd);
+}
+
+public bool TurnEnd(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext)
+{
+	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
+__msg.SimplePacketMode = core.IsSimplePacketMode();
+Nettention.Proud.RmiID __msgid= Common.TurnEnd;
+__msg.Write(__msgid);
+		
+	return RmiSend(remotes,rmiContext,__msg,
+		RmiName_TurnEnd, Common.TurnEnd);
+}
 	
 		#if USE_RMI_NAME_STRING
 // RMI name declaration.
@@ -287,6 +311,7 @@ public const string RmiName_Draw="Draw";
 public const string RmiName_ChangeSymbol="ChangeSymbol";
 public const string RmiName_OneCard="OneCard";
 public const string RmiName_ZeroCard="ZeroCard";
+public const string RmiName_TurnEnd="TurnEnd";
        
 public const string RmiName_First = RmiName_CreateRoom;
 		#else
@@ -302,6 +327,7 @@ public const string RmiName_Draw="";
 public const string RmiName_ChangeSymbol="";
 public const string RmiName_OneCard="";
 public const string RmiName_ZeroCard="";
+public const string RmiName_TurnEnd="";
        
 public const string RmiName_First = "";
 		#endif
