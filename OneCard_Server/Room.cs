@@ -79,8 +79,17 @@ namespace OneCard_Server
                 if (!p.IsReady)
                     return false;
             Console.WriteLine("All Player is Ready! Game Start!");
+            Random rd = new Random();
             foreach (var p in InPlayer)
+            {
                 Program.Proxy.Start(p.ID, RmiContext.ReliableSend);
+
+                if (LastCard == null)
+                    LastCard = new Card(rd.Next(1, 4), rd.Next(1, 14));
+
+                Console.WriteLine($"{LastCard.Symbol} / {LastCard.Num}");
+                Program.Proxy.LastCard(p.ID, RmiContext.ReliableSend, LastCard.Symbol, LastCard.Num);
+            }
             return true;
         }
         public void ChangeSymbol(int symbol)

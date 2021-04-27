@@ -32,17 +32,14 @@ namespace OneCard_Server
         {
             LastDown = Cards.Find((c) => { return c.Symbol == symbol && c.Num == num; });
             bool isOk = false;
-            if (num == 14)// black
+            if (num == 14)// joker
             {
                 if (InRoom.LastCard.Symbol % 2 == 1)
                 {
                     InRoom.Attack(5);
                     isOk = true;
                 }
-            }
-            else if (num == 15)// color
-            {
-                if (InRoom.LastCard.Symbol % 2 == 0)
+                else if (InRoom.LastCard.Symbol % 2 == 0)
                 {
                     InRoom.Attack(7);
                     isOk = true;
@@ -83,7 +80,7 @@ namespace OneCard_Server
             Random rd = new Random();
             for (int i = 0; i < InRoom.AttackStack; i++)
             {
-                Card card = new Card(rd.Next(1, 4), rd.Next(1, 15));
+                Card card = new Card(rd.Next(1, 4), rd.Next(1, 14));
                 Cards.Add(card);
                 Program.Proxy.Draw(ID, RmiContext.ReliableSend, card.Symbol, card.Num);
             }
