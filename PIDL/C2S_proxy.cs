@@ -173,13 +173,12 @@ Nettention.Proud.Marshaler.Write(__msg, num);
 	return RmiSend(remotes,rmiContext,__msg,
 		RmiName_Down, Common.Down);
 }
-public bool Draw(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int count)
+public bool Draw(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext)
 {
 	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
 		__msg.SimplePacketMode = core.IsSimplePacketMode();
 		Nettention.Proud.RmiID __msgid= Common.Draw;
 		__msg.Write(__msgid);
-		Nettention.Proud.Marshaler.Write(__msg, count);
 		
 	Nettention.Proud.HostID[] __list = new Nettention.Proud.HostID[1];
 	__list[0] = remote;
@@ -188,13 +187,12 @@ public bool Draw(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiC
 		RmiName_Draw, Common.Draw);
 }
 
-public bool Draw(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext, int count)
+public bool Draw(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext)
 {
 	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
 __msg.SimplePacketMode = core.IsSimplePacketMode();
 Nettention.Proud.RmiID __msgid= Common.Draw;
 __msg.Write(__msgid);
-Nettention.Proud.Marshaler.Write(__msg, count);
 		
 	return RmiSend(remotes,rmiContext,__msg,
 		RmiName_Draw, Common.Draw);

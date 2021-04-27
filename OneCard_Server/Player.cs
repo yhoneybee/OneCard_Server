@@ -71,7 +71,12 @@ namespace OneCard_Server
                     Draw();
             }
             if (isOk)
+            {
+                InRoom.LastCard = LastDown;
+                foreach (var p in InRoom.InPlayer)
+                    Program.Proxy.LastCard(p.ID, RmiContext.ReliableSend, LastDown.Symbol, LastDown.Num);
                 Cards.Remove(LastDown);
+            }
         }
         public void Draw()
         {

@@ -46,8 +46,8 @@ public BeforeRmiInvocationDelegate BeforeRmiInvocation = delegate(Nettention.Pro
 		{ 
 			return false;
 		};
-		public delegate bool DrawDelegate(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int count);  
-		public DrawDelegate Draw = delegate(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int count)
+		public delegate bool DrawDelegate(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext);  
+		public DrawDelegate Draw = delegate(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext)
 		{ 
 			return false;
 		};
@@ -443,13 +443,11 @@ parameterString+=num.ToString()+",";
         ctx.encryptMode = pa.EncryptMode;
         ctx.compressMode = pa.CompressMode;
 
-        int count; Nettention.Proud.Marshaler.Read(__msg,out count);	
-core.PostCheckReadMessage(__msg, RmiName_Draw);
+        core.PostCheckReadMessage(__msg, RmiName_Draw);
         if(enableNotifyCallFromStub==true)
         {
         string parameterString = "";
-        parameterString+=count.ToString()+",";
-        NotifyCallFromStub(Common.Draw, RmiName_Draw,parameterString);
+                NotifyCallFromStub(Common.Draw, RmiName_Draw,parameterString);
         }
 
         if(enableStubProfiling)
@@ -465,7 +463,7 @@ core.PostCheckReadMessage(__msg, RmiName_Draw);
         long t0 = Nettention.Proud.PreciseCurrentTime.GetTimeMs();
 
         // Call this method.
-        bool __ret =Draw (remote,ctx , count );
+        bool __ret =Draw (remote,ctx  );
 
         if(__ret==false)
         {

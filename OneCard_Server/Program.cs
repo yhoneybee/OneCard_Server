@@ -129,8 +129,9 @@ namespace OneCard_Server
             return true;
         }
 
-        private static bool OnDraw(HostID remote, RmiContext rmiContext, int count)
+        private static bool OnDraw(HostID remote, RmiContext rmiContext)
         {
+            Console.WriteLine($"{remote} do Draw");
             Player player = Player.Find(remote);
             player.Draw();
             return true;
