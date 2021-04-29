@@ -89,6 +89,34 @@ Nettention.Proud.Marshaler.Write(__msg, num);
 	return RmiSend(remotes,rmiContext,__msg,
 		RmiName_LastCard, Common.LastCard);
 }
+public bool Down(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int symbol, int num)
+{
+	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
+		__msg.SimplePacketMode = core.IsSimplePacketMode();
+		Nettention.Proud.RmiID __msgid= Common.Down;
+		__msg.Write(__msgid);
+		Nettention.Proud.Marshaler.Write(__msg, symbol);
+		Nettention.Proud.Marshaler.Write(__msg, num);
+		
+	Nettention.Proud.HostID[] __list = new Nettention.Proud.HostID[1];
+	__list[0] = remote;
+		
+	return RmiSend(__list,rmiContext,__msg,
+		RmiName_Down, Common.Down);
+}
+
+public bool Down(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext, int symbol, int num)
+{
+	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
+__msg.SimplePacketMode = core.IsSimplePacketMode();
+Nettention.Proud.RmiID __msgid= Common.Down;
+__msg.Write(__msgid);
+Nettention.Proud.Marshaler.Write(__msg, symbol);
+Nettention.Proud.Marshaler.Write(__msg, num);
+		
+	return RmiSend(remotes,rmiContext,__msg,
+		RmiName_Down, Common.Down);
+}
 public bool Draw(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, int symbol, int num)
 {
 	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
@@ -200,6 +228,7 @@ __msg.Write(__msgid);
 public const string RmiName_Start="Start";
 public const string RmiName_TurnStart="TurnStart";
 public const string RmiName_LastCard="LastCard";
+public const string RmiName_Down="Down";
 public const string RmiName_Draw="Draw";
 public const string RmiName_ChangeSymbol="ChangeSymbol";
 public const string RmiName_Rank="Rank";
@@ -212,6 +241,7 @@ public const string RmiName_First = RmiName_Start;
 public const string RmiName_Start="";
 public const string RmiName_TurnStart="";
 public const string RmiName_LastCard="";
+public const string RmiName_Down="";
 public const string RmiName_Draw="";
 public const string RmiName_ChangeSymbol="";
 public const string RmiName_Rank="";

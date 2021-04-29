@@ -14,23 +14,39 @@ namespace OneCard_Server
             MyTurn = false;
             Cards = new List<Card>();
         }
-        public static Player Find(HostID ID) => Players.Find((p) => { return p.ID == ID; });
+        public static Player Find(HostID ID)
+        {
+            foreach (var player in Players)
+                if (player.ID == ID)
+                    return player;
+            return null;
+        }
+        public Card Find(int symbol, int num)
+        {
+            foreach (var card in Cards)
+                if (card.Symbol == symbol && card.Num == num)
+                    return card;
+            return null;
+        }
         public void ReadySwitch(bool ready)
         {
-            IsReady = ready;
-            if (IsReady)
+            if (InRoom != null)
             {
-                Console.WriteLine($"Client ({ID}) is Ready!");
-                InRoom.AllReady();
-            }
-            else
-            {
-                Console.WriteLine($"Client ({ID}) is not Ready!");
+                IsReady = ready;
+                if (IsReady)
+                {
+                    Console.WriteLine($"Client ({ID}) is Ready!");
+                    InRoom.AllReady(ID);
+                }
+                else
+                {
+                    Console.WriteLine($"Client ({ID}) is not Ready!");
+                }
             }
         }
-        public void Down(int symbol, int num)
+        public bool Down(int symbol, int num)
         {
-            LastDown = Cards.Find((c) => { return c.Symbol == symbol && c.Num == num; });
+            LastDown = Find(symbol, num);
             bool isOk = false;
             if (num == 14)// joker
             {
@@ -74,6 +90,7 @@ namespace OneCard_Server
                     Program.Proxy.LastCard(p.ID, RmiContext.ReliableSend, LastDown.Symbol, LastDown.Num);
                 Cards.Remove(LastDown);
             }
+            return isOk;
         }
         public void Draw()
         {

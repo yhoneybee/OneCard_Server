@@ -31,7 +31,13 @@ namespace OneCard_Server
             Console.WriteLine($"[  OK  ] Room Creation Successful");
             return true;
         }
-        public static Room Find(string name) => Rooms.Find((r) => { return r.Name == name; });
+        public static Room Find(string name)
+        {
+            foreach (var room in Rooms)
+                if (room.Name == name)
+                    return room;
+            return null;
+        }
         public bool Join(Player player)
         {
             if (InPlayer.Count < Max)
@@ -68,7 +74,7 @@ namespace OneCard_Server
             Console.WriteLine($"[ FAIL ] Client ({player.ID}) <-x-- Room ({Name})");
             return false;
         }
-        public bool AllReady()
+        public bool AllReady(HostID ID)
         {
             if (InPlayer.Count <= 1)
             {
@@ -79,10 +85,16 @@ namespace OneCard_Server
                 if (!p.IsReady)
                     return false;
             Console.WriteLine("All Player is Ready! Game Start!");
+            IsStart = true;
             Random rd = new Random();
             foreach (var p in InPlayer)
             {
                 Program.Proxy.Start(p.ID, RmiContext.ReliableSend);
+
+                if (p.ID != ID)
+                {
+                    // 클라이언트 들에게 유니티에서 카드가 보이게 만들라고 명령
+                }
 
                 if (LastCard == null)
                     LastCard = new Card(rd.Next(1, 4), rd.Next(1, 14));
@@ -122,6 +134,10 @@ namespace OneCard_Server
             for (int i = 0; i < TurnLoop; i++)
             {
                 TurnIndex += Next;
+                if (TurnIndex == InPlayer.Count)
+                    TurnIndex = 0;
+                if (TurnIndex == -1)
+                    TurnIndex = InPlayer.Count - 1;
             }
             TurnLoop = 1;
         }
@@ -136,20 +152,13 @@ namespace OneCard_Server
                     Program.Proxy.TurnStart(InPlayer[TurnIndex].ID, RmiContext.ReliableSend);
                     InPlayer[TurnIndex].MyTurn = true;
                 }
-                if (!InPlayer[TurnIndex].MyTurn)
+                if (InPlayer.Count >= 1)
                 {
-                    NextTurn();
-                    IsFirst = true;
-                }
-                if (TurnIndex == InPlayer.Count - 1)
-                {
-                    TurnIndex = 0;
-                    Console.WriteLine("index = 0");
-                }
-                if (TurnIndex == -1)
-                {
-                    TurnIndex = InPlayer.Count - 1;
-                    Console.WriteLine("index = Count - 1");
+                    if (!InPlayer[TurnIndex].MyTurn)
+                    {
+                        NextTurn();
+                        IsFirst = true;
+                    }
                 }
             }
         }

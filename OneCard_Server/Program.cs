@@ -38,14 +38,15 @@ namespace OneCard_Server
             Server.AttachStub(Stub);
             Server.Start(param);
 
+            System.Timers.Timer rooms_logic = new System.Timers.Timer();
+            rooms_logic.Interval = 1000;
+            rooms_logic.Elapsed += Rooms_logic_Elapsed;
+            rooms_logic.Start();
+
             Print();
 
             while (true)
             {
-                foreach (var room in Room.Rooms)
-                {
-                    room.Logic();
-                }
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -102,6 +103,11 @@ namespace OneCard_Server
                 }
             }
         }
+        private static void Rooms_logic_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            foreach (Room room in Room.Rooms)
+                room.Logic();
+        }
 
         private static bool OnTurnEnd(HostID remote, RmiContext rmiContext)
         {
@@ -140,8 +146,12 @@ namespace OneCard_Server
         private static bool OnDown(HostID remote, RmiContext rmiContext, int symbol, int num)
         {
             Player player = Player.Find(remote);
-            player.Down(symbol, num);
-            return true;
+            bool result = player.Down(symbol, num);
+            if (result)
+            {
+                Proxy.Down(remote, rmiContext, symbol, num);
+            }
+            return result;
         }
 
         private static bool OnUnReady(HostID remote, RmiContext rmiContext)
@@ -173,10 +183,16 @@ namespace OneCard_Server
         {
             Player player = Player.Find(remote);
             Room room = Room.Find(name);
-            if (room.Pin == pin)
+            if (room != null)
             {
-                room.Join(player);
-                return true;
+                if (room.Pin == pin)
+                {
+                    if (!room.IsStart)
+                    {
+                        room.Join(player);
+                        return true;
+                    }
+                }
             }
             return false;
         }
@@ -208,7 +224,8 @@ namespace OneCard_Server
         private static void OnLeaveServer(NetClientInfo clientInfo, ErrorInfo errorinfo, ByteArray comment)
         {
             Player l = Player.Find(clientInfo.hostID);
-            l.InRoom.Leave(l);
+            if (l.InRoom != null)
+                l.InRoom.Leave(l);
             Player.Players.Remove(l);
             Console.WriteLine($"{clientInfo.hostID} leave to server...");
         }
