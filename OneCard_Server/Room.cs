@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Nettention.Proud;
+using System.Threading;
 
 namespace OneCard_Server
 {
@@ -93,11 +94,11 @@ namespace OneCard_Server
 
                 if (p.ID != ID)
                 {
-                    // 클라이언트 들에게 유니티에서 카드가 보이게 만들라고 명령
+                    // 클라이언트 들에게 유니티에서 정보가 보이게 만들라고 명령
                 }
 
                 if (LastCard == null)
-                    LastCard = new Card(rd.Next(1, 4), rd.Next(1, 14));
+                    LastCard = new Card(rd.Next(1, 5), rd.Next(1, 15));
 
                 Console.WriteLine($"{LastCard.Symbol} / {LastCard.Num}");
                 Program.Proxy.LastCard(p.ID, RmiContext.ReliableSend, LastCard.Symbol, LastCard.Num);
@@ -125,8 +126,12 @@ namespace OneCard_Server
             LastCard.Symbol = symbol;
         }
         public int Reverse() => Next == 1 ? Next = -1 : Next = 1;
-        public void Attack(int count) => AttackStack += count;
-        public void Defence() => AttackStack = 1;
+        public void Attack(int count)
+        {
+            Console.WriteLine($"Attack count : {count} += {AttackStack} ----> {count + AttackStack}");
+            AttackStack += count;
+        }
+        public void Defence() => AttackStack = 0;
         public void Again() => TurnLoop = 0;
         public void Jump() => TurnLoop = 2;
         public void NextTurn()
@@ -152,14 +157,10 @@ namespace OneCard_Server
                     Program.Proxy.TurnStart(InPlayer[TurnIndex].ID, RmiContext.ReliableSend);
                     InPlayer[TurnIndex].MyTurn = true;
                 }
-                if (InPlayer.Count >= 1)
-                {
-                    if (!InPlayer[TurnIndex].MyTurn)
-                    {
-                        NextTurn();
-                        IsFirst = true;
-                    }
-                }
+                else
+                    if (InPlayer.Count >= 1)
+                        if (!InPlayer[TurnIndex].MyTurn)
+                            IsFirst = true;
             }
         }
         public static List<Room> Rooms { get; set; } = new List<Room>();

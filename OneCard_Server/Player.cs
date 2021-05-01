@@ -68,6 +68,10 @@ namespace OneCard_Server
                     if (InRoom.LastCard.Symbol == symbol ||
                         InRoom.LastCard.Num == num)
                     {
+                        if (num == 1)
+                            InRoom.Attack(3);
+                        if (num == 2)
+                            InRoom.Attack(2);
                         if (num == 4)
                             InRoom.Defence();
                         if (num == 11)
@@ -75,21 +79,24 @@ namespace OneCard_Server
                         if (num == 13)
                             InRoom.Again();
 
-                        InRoom.NextTurn();
-
                         isOk = true;
                     }
-                }
-                else
-                    Draw();
+                }                    
             }
             if (isOk)
             {
+                Console.WriteLine($"Down!");
                 InRoom.LastCard = LastDown;
                 foreach (var p in InRoom.InPlayer)
                     Program.Proxy.LastCard(p.ID, RmiContext.ReliableSend, LastDown.Symbol, LastDown.Num);
                 Cards.Remove(LastDown);
             }
+            else
+            {
+                Console.WriteLine($"Draw! Count : {InRoom.AttackStack}");
+                Draw();
+            }
+            InRoom.NextTurn();
             return isOk;
         }
         public void Draw()
@@ -97,7 +104,7 @@ namespace OneCard_Server
             Random rd = new Random();
             for (int i = 0; i < InRoom.AttackStack; i++)
             {
-                Card card = new Card(rd.Next(1, 4), rd.Next(1, 14));
+                Card card = new Card(rd.Next(1, 5), rd.Next(1, 15));
                 Cards.Add(card);
                 Program.Proxy.Draw(ID, RmiContext.ReliableSend, card.Symbol, card.Num);
             }

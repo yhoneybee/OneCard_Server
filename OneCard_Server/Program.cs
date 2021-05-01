@@ -111,6 +111,7 @@ namespace OneCard_Server
 
         private static bool OnTurnEnd(HostID remote, RmiContext rmiContext)
         {
+            Console.WriteLine($"{remote} is Turn End!");
             Player player = Player.Find(remote);
             player.MyTurn = false;
             return true;
