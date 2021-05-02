@@ -124,6 +124,7 @@ namespace OneCard_Server
 
         private static bool OnOneCard(HostID remote, RmiContext rmiContext)
         {
+            Console.WriteLine($"{remote} is OneCard!");
             return true;
         }
 
