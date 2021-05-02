@@ -151,6 +151,7 @@ namespace OneCard_Server
             if (result)
             {
                 Proxy.Down(remote, rmiContext, symbol, num);
+                Console.WriteLine($"{remote} Down Card ({symbol}, {num})");
             }
             return result;
         }
