@@ -10,7 +10,6 @@ namespace OneCard_Server
         public static NetServer Server { get; set; } = new NetServer();
         public static S2C.Proxy Proxy { get; set; } = new S2C.Proxy();
         public static C2S.Stub Stub { get; set; } = new C2S.Stub();
-        public static Dictionary<HostID, int> ClientCardCount { get; set; } = new Dictionary<HostID, int>();
         static void Main(string[] _)
         {
             StartServerParameter param = new StartServerParameter();
@@ -107,15 +106,16 @@ namespace OneCard_Server
 
         private static bool OnNowCardsCount(HostID remote, RmiContext rmiContext, int count)
         {
+            Player p = Player.Find(remote);
             //클라이언트들이 자주 자신의 카드수를 보냄
-            if (ClientCardCount.ContainsKey(remote))
-                ClientCardCount[remote] = count;
+            if (p.InRoom.ClientCardCount.ContainsKey(remote))
+                p.InRoom.ClientCardCount[remote] = count;
             else
-                ClientCardCount.Add(remote, count);
+                p.InRoom.ClientCardCount.Add(remote, count);
 
             foreach (var player in Player.Find(remote).InRoom.InPlayer)
-                foreach (var client_and_card in ClientCardCount)
-                    if (player.ID != remote)
+                foreach (var client_and_card in p.InRoom.ClientCardCount)
+                    if (player.ID != client_and_card.Key)
                         Proxy.NowCardsCount(player.ID, rmiContext, client_and_card.Key, client_and_card.Value);
 
             return true;
@@ -137,12 +137,14 @@ namespace OneCard_Server
 
         private static bool OnZeroCard(HostID remote, RmiContext rmiContext)
         {
+            Proxy.Rank(remote, rmiContext, ++Player.Find(remote).InRoom.Rank);
+            Proxy.ExcludeGame(remote, rmiContext);
             return true;
         }
 
         private static bool OnOneCard(HostID remote, RmiContext rmiContext)
         {
-            Console.WriteLine($"{remote} is OneCard!");
+            Console.WriteLine($"{remote} is OneCard!");// <-- 이걸 다른 클라도 알아야함
             return true;
         }
 
@@ -248,7 +250,7 @@ namespace OneCard_Server
             if (l.InRoom != null)
                 l.InRoom.Leave(l);
             Player.Players.Remove(l);
-            ClientCardCount.Remove(clientInfo.hostID);
+            l.InRoom.ClientCardCount.Remove(clientInfo.hostID);
             Console.WriteLine($"{clientInfo.hostID} leave to server...");
         }
 

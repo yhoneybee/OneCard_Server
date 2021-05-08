@@ -19,6 +19,8 @@ namespace OneCard_Server
             AttackStack = 1;
             TurnLoop = 1;
             InPlayer = new List<Player>();
+            ClientCardCount = new Dictionary<HostID, int>();
+            Rank = 0;
         }
         public static bool Create(string name, int pin, int max)
         {
@@ -175,5 +177,7 @@ namespace OneCard_Server
         public int TurnLoop { get; set; }
         public bool IsFirst { get; set; }
         public int AttackStack { get; set; }
+        public Dictionary<HostID, int> ClientCardCount { get; set; }
+        public int Rank { get; set; } = 0;
     }
 }
