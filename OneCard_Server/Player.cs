@@ -44,6 +44,17 @@ namespace OneCard_Server
                 }
             }
         }
+        void CardEffect(int num)
+        {
+            if (num == 1)
+                InRoom.Attack(2);
+            if (num == 2)
+                InRoom.Attack(1);
+            if (num == 11)
+                InRoom.Jump();
+            if (num == 13)
+                InRoom.Again();
+        }
         public bool Down(int symbol, int num)
         {
             LastDown = Find(symbol, num);
@@ -52,12 +63,12 @@ namespace OneCard_Server
             {
                 if (InRoom.LastCard.Symbol % 2 == 1)
                 {
-                    InRoom.Attack(5);
+                    InRoom.Attack(4);
                     isOk = true;
                 }
                 else if (InRoom.LastCard.Symbol % 2 == 0)
                 {
-                    InRoom.Attack(7);
+                    InRoom.Attack(6);
                     isOk = true;
                 }
             }
@@ -65,23 +76,102 @@ namespace OneCard_Server
             {
                 if (InRoom.AttackStack <= 1)
                 {
-                    if (InRoom.LastCard.Symbol == symbol ||
+                    if (InRoom.LastCard.Num == 14) // 마지막 카드가 조커라면
+                    {
+                        if (InRoom.LastCard.Symbol % 2 == 1) // 흑백
+                        {
+                            if (symbol % 2 == 1)
+                            {
+                                CardEffect(num);
+
+                                isOk = true;
+                            }
+                        }
+                        else if (InRoom.LastCard.Symbol % 2 == 0) // 컬러
+                        {
+                            if (symbol % 2 == 0)
+                            {
+                                CardEffect(num);
+
+                                isOk = true;
+                            }
+                        }
+                    }
+                    else if (InRoom.LastCard.Symbol == symbol ||
                         InRoom.LastCard.Num == num)
                     {
-                        if (num == 1)
-                            InRoom.Attack(3);
-                        if (num == 2)
-                            InRoom.Attack(2);
-                        if (num == 4)
-                            InRoom.Defence();
-                        if (num == 11)
-                            InRoom.Jump();
-                        if (num == 13)
-                            InRoom.Again();
+                        CardEffect(num);
 
                         isOk = true;
                     }
-                }                    
+                }
+                else //공격스택이 쌓여있다면
+                {
+                    if (InRoom.LastCard.Num == 14)
+                    {
+                        if (InRoom.LastCard.Symbol % 2 == 1) // 흑백
+                        {
+                            if (symbol % 2 == 1)
+                            {
+                                switch (num)
+                                {
+                                    case 1:
+                                        InRoom.Attack(2); isOk = true;
+                                        break;
+                                    case 2:
+                                        InRoom.Attack(1); isOk = true;
+                                        break;
+                                    case 4:
+                                        InRoom.Defence(); isOk = true;
+                                        break;
+                                    case 14:
+                                        InRoom.Attack(4); isOk = true;
+                                        break;
+                                }
+                            }
+                        }
+                        else if (InRoom.LastCard.Symbol % 2 == 0) // 컬러
+                        {
+                            if (symbol % 2 == 0)
+                            {
+                                switch (num)
+                                {
+                                    case 1:
+                                        InRoom.Attack(2); isOk = true;
+                                        break;
+                                    case 2:
+                                        InRoom.Attack(1); isOk = true;
+                                        break;
+                                    case 4:
+                                        InRoom.Defence(); isOk = true;
+                                        break;
+                                    case 14:
+                                        InRoom.Attack(6); isOk = true;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    else if (InRoom.LastCard.Symbol == symbol ||
+                    InRoom.LastCard.Num == num)
+                    {
+                        switch (num)
+                        {
+                            case 1:
+                                InRoom.Attack(2); isOk = true;
+                                break;
+                            case 2:
+                                InRoom.Attack(1); isOk = true;
+                                break;
+                            case 4:
+                                InRoom.Defence(); isOk = true;
+                                break;
+                            case 14:
+                                InRoom.Attack(4); isOk = true;
+                                break;
+                        }
+                    }
+                }
             }
             if (isOk)
             {

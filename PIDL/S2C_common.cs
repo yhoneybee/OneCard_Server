@@ -21,6 +21,7 @@ namespace S2C
 			public const Nettention.Proud.RmiID ChangeSymbol = (Nettention.Proud.RmiID)2000+6;
 			public const Nettention.Proud.RmiID Rank = (Nettention.Proud.RmiID)2000+7;
 			public const Nettention.Proud.RmiID ExcludeGame = (Nettention.Proud.RmiID)2000+8;
+			public const Nettention.Proud.RmiID NowCardsCount = (Nettention.Proud.RmiID)2000+9;
 		// List that has RMI ID.
 		public static Nettention.Proud.RmiID[] RmiIDList = new Nettention.Proud.RmiID[] {
 			Start,
@@ -31,6 +32,7 @@ namespace S2C
 			ChangeSymbol,
 			Rank,
 			ExcludeGame,
+			NowCardsCount,
 		};
 	}
 }

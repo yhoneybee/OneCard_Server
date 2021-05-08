@@ -24,6 +24,7 @@ namespace C2S
 			public const Nettention.Proud.RmiID OneCard = (Nettention.Proud.RmiID)1000+9;
 			public const Nettention.Proud.RmiID ZeroCard = (Nettention.Proud.RmiID)1000+10;
 			public const Nettention.Proud.RmiID TurnEnd = (Nettention.Proud.RmiID)1000+11;
+			public const Nettention.Proud.RmiID NowCardsCount = (Nettention.Proud.RmiID)1000+12;
 		// List that has RMI ID.
 		public static Nettention.Proud.RmiID[] RmiIDList = new Nettention.Proud.RmiID[] {
 			CreateRoom,
@@ -37,6 +38,7 @@ namespace C2S
 			OneCard,
 			ZeroCard,
 			TurnEnd,
+			NowCardsCount,
 		};
 	}
 }

@@ -10,7 +10,7 @@ namespace OneCard_Server
         public static NetServer Server { get; set; } = new NetServer();
         public static S2C.Proxy Proxy { get; set; } = new S2C.Proxy();
         public static C2S.Stub Stub { get; set; } = new C2S.Stub();
-
+        public static Dictionary<HostID, int> ClientCardCount { get; set; } = new Dictionary<HostID, int>();
         static void Main(string[] _)
         {
             StartServerParameter param = new StartServerParameter();
@@ -33,6 +33,7 @@ namespace OneCard_Server
             Stub.OneCard = OnOneCard;
             Stub.ZeroCard = OnZeroCard;
             Stub.TurnEnd = OnTurnEnd;
+            Stub.NowCardsCount = OnNowCardsCount;
 
             Server.AttachProxy(Proxy);
             Server.AttachStub(Stub);
@@ -103,6 +104,23 @@ namespace OneCard_Server
                 }
             }
         }
+
+        private static bool OnNowCardsCount(HostID remote, RmiContext rmiContext, int count)
+        {
+            //클라이언트들이 자주 자신의 카드수를 보냄
+            if (ClientCardCount.ContainsKey(remote))
+                ClientCardCount[remote] = count;
+            else
+                ClientCardCount.Add(remote, count);
+
+            foreach (var player in Player.Find(remote).InRoom.InPlayer)
+                foreach (var client_and_card in ClientCardCount)
+                    if (player.ID != remote)
+                        Proxy.NowCardsCount(player.ID, rmiContext, client_and_card.Key, client_and_card.Value);
+
+            return true;
+        }
+
         private static void Rooms_logic_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             foreach (Room room in Room.Rooms)
@@ -230,6 +248,7 @@ namespace OneCard_Server
             if (l.InRoom != null)
                 l.InRoom.Leave(l);
             Player.Players.Remove(l);
+            ClientCardCount.Remove(clientInfo.hostID);
             Console.WriteLine($"{clientInfo.hostID} leave to server...");
         }
 

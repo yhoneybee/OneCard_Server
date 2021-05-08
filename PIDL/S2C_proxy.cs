@@ -221,6 +221,34 @@ __msg.Write(__msgid);
 	return RmiSend(remotes,rmiContext,__msg,
 		RmiName_ExcludeGame, Common.ExcludeGame);
 }
+public bool NowCardsCount(Nettention.Proud.HostID remote,Nettention.Proud.RmiContext rmiContext, Nettention.Proud.HostID client, int count)
+{
+	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
+		__msg.SimplePacketMode = core.IsSimplePacketMode();
+		Nettention.Proud.RmiID __msgid= Common.NowCardsCount;
+		__msg.Write(__msgid);
+		Nettention.Proud.Marshaler.Write(__msg, client);
+		Nettention.Proud.Marshaler.Write(__msg, count);
+		
+	Nettention.Proud.HostID[] __list = new Nettention.Proud.HostID[1];
+	__list[0] = remote;
+		
+	return RmiSend(__list,rmiContext,__msg,
+		RmiName_NowCardsCount, Common.NowCardsCount);
+}
+
+public bool NowCardsCount(Nettention.Proud.HostID[] remotes,Nettention.Proud.RmiContext rmiContext, Nettention.Proud.HostID client, int count)
+{
+	Nettention.Proud.Message __msg=new Nettention.Proud.Message();
+__msg.SimplePacketMode = core.IsSimplePacketMode();
+Nettention.Proud.RmiID __msgid= Common.NowCardsCount;
+__msg.Write(__msgid);
+Nettention.Proud.Marshaler.Write(__msg, client);
+Nettention.Proud.Marshaler.Write(__msg, count);
+		
+	return RmiSend(remotes,rmiContext,__msg,
+		RmiName_NowCardsCount, Common.NowCardsCount);
+}
 	
 		#if USE_RMI_NAME_STRING
 // RMI name declaration.
@@ -233,6 +261,7 @@ public const string RmiName_Draw="Draw";
 public const string RmiName_ChangeSymbol="ChangeSymbol";
 public const string RmiName_Rank="Rank";
 public const string RmiName_ExcludeGame="ExcludeGame";
+public const string RmiName_NowCardsCount="NowCardsCount";
        
 public const string RmiName_First = RmiName_Start;
 		#else
@@ -246,6 +275,7 @@ public const string RmiName_Draw="";
 public const string RmiName_ChangeSymbol="";
 public const string RmiName_Rank="";
 public const string RmiName_ExcludeGame="";
+public const string RmiName_NowCardsCount="";
        
 public const string RmiName_First = "";
 		#endif

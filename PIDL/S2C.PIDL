@@ -10,6 +10,7 @@ global S2C 2000 // Fill your namespace and start ID number here.
 	ChangeSymbol([in] int symbol);
 	Rank([in] int rank);
 	ExcludeGame();
+	NowCardsCount([in] HostID client,[in] int count);
 }
 
 

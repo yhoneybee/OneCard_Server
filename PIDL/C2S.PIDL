@@ -18,6 +18,7 @@ global C2S 1000 // Fill your namespace and start ID number here.
 	OneCard();
 	ZeroCard();
 	TurnEnd();
+	NowCardsCount([in] int count);
 }
 
 
