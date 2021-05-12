@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+      "projectUniqueName": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
       "projectName": "PIDL",
-      "projectPath": "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+      "projectPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
       "packagesPath": "C:\\Users\\chaey\\.nuget\\packages\\",
-      "outputPath": "C:\\git\\OneCard_Server\\PIDL\\obj\\",
+      "outputPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\chaey\\AppData\\Roaming\\NuGet\\NuGet.Config",

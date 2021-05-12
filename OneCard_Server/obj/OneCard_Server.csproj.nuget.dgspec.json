@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj": {}
+    "D:\\private\\folder\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj": {}
   },
   "projects": {
-    "C:\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj": {
+    "D:\\private\\folder\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj",
+        "projectUniqueName": "D:\\private\\folder\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj",
         "projectName": "OneCard_Server",
-        "projectPath": "C:\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj",
+        "projectPath": "D:\\private\\folder\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj",
         "packagesPath": "C:\\Users\\chaey\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\OneCard_Server\\OneCard_Server\\obj\\",
+        "outputPath": "D:\\private\\folder\\git\\OneCard_Server\\OneCard_Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chaey\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {
-                "projectPath": "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj"
+              "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {
+                "projectPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj"
               }
             }
           }
@@ -62,14 +62,14 @@
         }
       }
     },
-    "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {
+    "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+        "projectUniqueName": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
         "projectName": "PIDL",
-        "projectPath": "C:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+        "projectPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
         "packagesPath": "C:\\Users\\chaey\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\OneCard_Server\\PIDL\\obj\\",
+        "outputPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chaey\\AppData\\Roaming\\NuGet\\NuGet.Config",
