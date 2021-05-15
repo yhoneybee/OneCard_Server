@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Sw8qNMu0wm91VCeTFnsNA3F5VdeWk7lTLML9UTEpv17ueTKPAC1wgJKN2XHvs0sHeTbZIOfsDKi12w+jxtvnkQ==",
+  "dgSpecHash": "Fp2GRM/UJ3vBUJ0bKvIST0++vyXnGYaft6JUgHGns7qdGlPCvlrbmCBlqMPMm5lLI0l+xgCoyXJ7vm26IxlRWg==",
   "success": true,
-  "projectFilePath": "D:\\private\\folder\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj",
+  "projectFilePath": "D:\\git\\OneCard_Server\\OneCard_Server\\OneCard_Server.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

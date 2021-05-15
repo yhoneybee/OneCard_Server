@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hJ6NWvj4mzzEjK11E1QSM1taUlRd2KUkT02HZuybtx/rG4gV1kk+ODWOL0GMkiyyQWXq3kxOIUL9QqLAGj88Ag==",
+  "dgSpecHash": "swL6vw9CE7JvpxW4fDj+YaUl5kdMWJmQogTRVhS5eKmtv+St6NOMEx/eCj0WFztOIb0/9h2PIK2jz1Ts2IPong==",
   "success": true,
-  "projectFilePath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+  "projectFilePath": "D:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {}
+    "D:\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {}
   },
   "projects": {
-    "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {
+    "D:\\git\\OneCard_Server\\PIDL\\PIDL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+        "projectUniqueName": "D:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
         "projectName": "PIDL",
-        "projectPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
+        "projectPath": "D:\\git\\OneCard_Server\\PIDL\\PIDL.csproj",
         "packagesPath": "C:\\Users\\chaey\\.nuget\\packages\\",
-        "outputPath": "D:\\private\\folder\\git\\OneCard_Server\\PIDL\\obj\\",
+        "outputPath": "D:\\git\\OneCard_Server\\PIDL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chaey\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -54,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

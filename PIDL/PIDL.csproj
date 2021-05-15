@@ -5,10 +5,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ProudDotNetClient">
-      <HintPath>..\..\Online\DLL\ProudDotNetClient.dll</HintPath>
+      <HintPath>..\DLL\ProudDotNetClient.dll</HintPath>
     </Reference>
     <Reference Include="ProudDotNetServer">
-      <HintPath>..\..\Online\DLL\ProudDotNetServer.dll</HintPath>
+      <HintPath>..\DLL\ProudDotNetServer.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
