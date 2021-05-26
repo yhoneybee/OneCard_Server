@@ -248,9 +248,11 @@ namespace OneCard_Server
         {
             Player l = Player.Find(clientInfo.hostID);
             if (l.InRoom != null)
+            {
+                l.InRoom.ClientCardCount.Remove(clientInfo.hostID);
                 l.InRoom.Leave(l);
+            }
             Player.Players.Remove(l);
-            l.InRoom.ClientCardCount.Remove(clientInfo.hostID);
             Console.WriteLine($"{clientInfo.hostID} leave to server...");
         }
 
